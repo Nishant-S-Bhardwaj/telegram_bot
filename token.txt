@@ -1,0 +1,2 @@
+TOKEN = os.getenv("BOT_TOKEN", "7954690302:AAH9O3zN4DVjB6RyhpsZXjYWZUDQroNcyr8")
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "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")
