@@ -4,8 +4,9 @@ from telegram import Update, ChatPermissions
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
 
 # ====== CONFIGURATION ======
-TELEGRAM_TOKEN = "YOUR_TELEGRAM_BOT_TOKEN"  # Replace with your actual Telegram bot token
-OPENAI_API_KEY = "YOUR_OPENAI_API_KEY"  # Replace with your actual OpenAI API key
+TELEGRAM_TOKEN = "7954690302:AAH9O3zN4DVjB6RyhpsZXjYWZUDQroNcyr8"  # Replace with your actual Telegram bot token
+OPENAI_API_KEY = "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")
+"  # Replace with your actual OpenAI API key
 ADMIN_FILE = "admin_id.txt"
 # ===========================
 
