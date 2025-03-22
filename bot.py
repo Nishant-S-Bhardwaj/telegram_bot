@@ -1,11 +1,11 @@
-import openai
 import os
+import openai
 from telegram import Update, ChatPermissions
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
 
 # ====== CONFIGURATION ======
-TELEGRAM_TOKEN = "7954690302:AAH9O3zN4DVjB6RyhpsZXjYWZUDQroNcyr8"
-OPENAI_API_KEY = "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"
+TELEGRAM_TOKEN = "YOUR_TELEGRAM_BOT_TOKEN"  # Replace with your actual Telegram bot token
+OPENAI_API_KEY = "YOUR_OPENAI_API_KEY"  # Replace with your actual OpenAI API key
 ADMIN_FILE = "admin_id.txt"
 # ===========================
 
@@ -92,7 +92,48 @@ async def announce(update: Update, context: ContextTypes.DEFAULT_TYPE):
         text=f"📢 **ADMIN ANNOUNCEMENT**\n\n{message}"
     )
 
-# ... (keep your existing kick/ban/mute handlers with is_admin checks) ...
+async def kick(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Kick a user from the chat"""
+    if not is_admin(update.effective_user.id):
+        await update.message.reply_text("❌ Admin only command!")
+        return
+
+    if not update.message.reply_to_message:
+        await update.message.reply_text("Reply to a user to kick them.")
+        return
+
+    user_id = update.message.reply_to_message.from_user.id
+    await context.bot.ban_chat_member(update.effective_chat.id, user_id)
+    await context.bot.unban_chat_member(update.effective_chat.id, user_id)
+    await update.message.reply_text(f"✅ User has been kicked.")
+
+async def ban(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Ban a user from the chat"""
+    if not is_admin(update.effective_user.id):
+        await update.message.reply_text("❌ Admin only command!")
+        return
+
+    if not update.message.reply_to_message:
+        await update.message.reply_text("Reply to a user to ban them.")
+        return
+
+    user_id = update.message.reply_to_message.from_user.id
+    await context.bot.ban_chat_member(update.effective_chat.id, user_id)
+    await update.message.reply_text(f"✅ User has been banned.")
+
+async def mute(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Mute a user in the chat"""
+    if not is_admin(update.effective_user.id):
+        await update.message.reply_text("❌ Admin only command!")
+        return
+
+    if not update.message.reply_to_message:
+        await update.message.reply_text("Reply to a user to mute them.")
+        return
+
+    user_id = update.message.reply_to_message.from_user.id
+    await context.bot.restrict_chat_member(update.effective_chat.id, user_id, ChatPermissions(can_send_messages=False))
+    await update.message.reply_text(f"✅ User has been muted.")
 
 async def handle_openai_query(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """AI response handler"""
@@ -113,6 +154,9 @@ def main():
     app.add_handler(CommandHandler("myid", my_id))
     app.add_handler(CommandHandler("setadmin", set_admin))
     app.add_handler(CommandHandler("announce", announce))
+    app.add_handler(CommandHandler("kick", kick))
+    app.add_handler(CommandHandler("ban", ban))
+    app.add_handler(CommandHandler("mute", mute))
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_openai_query))
 
     # Admin warning check
