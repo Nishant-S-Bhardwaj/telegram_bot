@@ -5,8 +5,7 @@ from telegram.ext import Application, CommandHandler, MessageHandler, filters, C
 
 # ====== CONFIGURATION ======
 TELEGRAM_TOKEN = "7954690302:AAH9O3zN4DVjB6RyhpsZXjYWZUDQroNcyr8"  # Replace with your actual Telegram bot token
-OPENAI_API_KEY = "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")
-"  # Replace with your actual OpenAI API key
+OPENAI_API_KEY = "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"
 ADMIN_FILE = "admin_id.txt"
 # ===========================
 
